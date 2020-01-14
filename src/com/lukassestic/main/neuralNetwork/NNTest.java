@@ -34,14 +34,5 @@ public class NNTest {
         };
 
         DatasetUtility d = new DatasetUtility("dataset1");
-        d.read();
-
-//        NeuralNetwork nn = new NeuralNetwork(100000, 0.2, d.getIns(), d.getOuts(), new int[]{40, 5, 5, 5});
-//        NeuralNetwork nn = new NeuralNetwork(10000, 0.2, d.getIns(), d.getOuts());
-//        nn.addLayer(40, )
-//                .addLayer(5)
-//                .addLayer(5)
-//                .addLayer(5);
-//        nn.fit(d.getnSamples());
     }
 }

@@ -15,9 +15,10 @@ public class DatasetUtility {
 
     public DatasetUtility(String filename) {
         this.filename = filename;
+        read();
     }
 
-    public void read() {
+    private void read() {
         ins = new ArrayList<>();
         outs = new ArrayList<>();
         try {

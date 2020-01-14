@@ -6,6 +6,7 @@ import com.lukassestic.main.neuralNetwork.layer.impl.Layer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NeuralNetwork {
     private DatasetUtility datasetUtility;
@@ -28,6 +29,17 @@ public class NeuralNetwork {
         layers.add(new Layer(lastInputSize, neurons, activation));
 
         return this;
+    }
+
+    private NeuralNetwork(DatasetUtility datasetUtility, double fitness, List<Layer> layers) {
+        this.datasetUtility = datasetUtility;
+        this.fitness = fitness;
+        this.layers = layers;
+    }
+
+    public NeuralNetwork copy() {
+        List<Layer> layersCopy = layers.stream().map(Layer::copy).collect(Collectors.toList());
+        return new NeuralNetwork(datasetUtility, 0, layersCopy);
     }
 
     public void evaluate() {
@@ -60,5 +72,13 @@ public class NeuralNetwork {
 
     public double getFitness() {
         return fitness;
+    }
+
+    public Layer getLayerAt(int index) {
+        return layers.get(index);
+    }
+
+    public int getNumberOfLayers() {
+        return layers.size();
     }
 }

@@ -5,6 +5,8 @@ import com.lukassestic.main.neuralNetwork.activations.Activation;
 import com.lukassestic.main.neuralNetwork.activations.impl.SigmoidActivation;
 import com.lukassestic.main.utilities.RandomUtility;
 
+import java.util.Arrays;
+
 public class Layer {
     private double[] outputs; // Y
     private double[][] weights; // I x O
@@ -27,6 +29,28 @@ public class Layer {
         scalingFactors = new double[neurons][inputSize];
 
         createRandomWeights();
+    }
+
+    private Layer(double[] outputs, double[][] weights, double[][] scalingFactors, int inputSize, int neurons, Activation activation) {
+        this.outputs = outputs;
+        this.weights = weights;
+        this.scalingFactors = scalingFactors;
+        this.inputSize = inputSize;
+        this.neurons = neurons;
+        this.activation = activation;
+    }
+
+    public Layer copy() {
+        double[] outputsCopy = Arrays.copyOf(outputs, outputs.length);
+        double[][] weightsCopy = new double[weights.length][weights[0].length];
+        double[][] scalingFactorsCopy = new double[scalingFactors.length][scalingFactors[0].length];
+
+        for (int i = 0; i < weightsCopy.length; i++) {
+            weightsCopy[i] = Arrays.copyOf(weights[i], weights[i].length);
+            scalingFactorsCopy[i] = Arrays.copyOf(scalingFactorsCopy[i], scalingFactorsCopy[i].length);
+        }
+
+        return new Layer(outputsCopy, weightsCopy, scalingFactorsCopy, inputSize, neurons, activation);
     }
 
     private void createRandomWeights() {
