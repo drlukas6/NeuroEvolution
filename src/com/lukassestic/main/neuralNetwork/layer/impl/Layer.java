@@ -95,4 +95,8 @@ public class Layer {
     public void setScalingFactors(double[][] scalingFactors) {
         this.scalingFactors = scalingFactors;
     }
+
+    public Activation getActivation() {
+        return activation;
+    }
 }

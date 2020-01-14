@@ -14,11 +14,6 @@ public class HeuristicNetworkCrossover implements Crossover {
 
         NeuralNetwork child = better.copy();
 
-//        for (int i = 0; i < p1.getLength(); i++) {
-//            double value = better.getValueAt(i) + RandomUtility.doubleInRange(0, 1) * (better.getValueAt(i) - worse.getValueAt(i));
-//            child.setValueAt(value, i);
-//        }
-
         for (int layerIndex = 1; layerIndex < better.getNumberOfLayers(); layerIndex++) {
             Layer betterLayer = better.getLayerAt(layerIndex);
             Layer worseLayer = better.getLayerAt(layerIndex);

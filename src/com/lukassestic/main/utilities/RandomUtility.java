@@ -9,4 +9,9 @@ public class RandomUtility {
         r = new Random();
        return l + (u - l) * r.nextDouble();
     }
+
+    public static int intInRange(int l, int u) {
+        r = new Random();
+        return l + (u - l) * r.nextInt();
+    }
 }

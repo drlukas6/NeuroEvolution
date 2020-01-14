@@ -81,4 +81,16 @@ public class NeuralNetwork {
     public int getNumberOfLayers() {
         return layers.size();
     }
+
+    public NeuralNetwork prototypeCopy() {
+        NeuralNetwork copy = new NeuralNetwork(datasetUtility);
+
+        for (Layer layer : layers) {
+            copy.addLayer(layer.getNeurons(), layer.getActivation());
+        }
+
+        copy.evaluate();
+
+        return copy;
+    }
 }
