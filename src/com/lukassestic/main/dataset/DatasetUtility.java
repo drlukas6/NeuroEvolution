@@ -48,4 +48,8 @@ public class DatasetUtility {
     public double[] getOutputAt(int i) {
         return outs.get(i);
     }
+
+    public int getDatasetSize() {
+        return ins.size();
+    }
 }

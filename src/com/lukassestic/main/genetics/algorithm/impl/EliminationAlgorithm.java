@@ -42,7 +42,7 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
         for (int iteration = 0; iteration <= context.getMaxIterations(); iteration++) {
             double bestFitness = population.get(population.size() - 1).getFitness();
 
-            if (iteration % 100 == 0) {
+            if (iteration % 10000 == 0) {
                 System.out.println("I: " + iteration + " Min error: " + 1.0 / bestFitness + " Fitness: " + bestFitness);
             }
 

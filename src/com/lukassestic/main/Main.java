@@ -15,6 +15,8 @@ import com.lukassestic.main.neuralNetwork.activations.Activation;
 import com.lukassestic.main.neuralNetwork.activations.impl.SigmoidActivation;
 import com.lukassestic.main.neuralNetwork.activations.impl.Type1Activation;
 
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
         DatasetUtility datasetUtility = new DatasetUtility("dataset.txt");
@@ -40,5 +42,20 @@ public class Main {
         GeneticAlgorithm geneticAlgorithm = new EliminationAlgorithm(context);
 
         NeuralNetwork best = geneticAlgorithm.fit();
+        test(best, datasetUtility);
+    }
+
+    private static void test(NeuralNetwork neuralNetwork, DatasetUtility datasetUtility) {
+        for (int i = 0; i < datasetUtility.getDatasetSize(); i++) {
+            double[] expected = datasetUtility.getOutputAt(i);
+            double[] predicted = neuralNetwork.predict(datasetUtility.getInputAt(i));
+
+            StringBuilder stringBuilder = new StringBuilder(40);
+            stringBuilder.append("Real: ")
+                         .append(Arrays.toString(expected))
+                         .append("\tPredicted: ")
+                         .append(Arrays.toString(predicted));
+            System.out.println(stringBuilder);
+        }
     }
 }
