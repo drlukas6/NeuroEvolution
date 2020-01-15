@@ -13,7 +13,14 @@ import com.lukassestic.main.neuralNetwork.activations.Activation;
 import com.lukassestic.main.neuralNetwork.activations.impl.SigmoidActivation;
 import com.lukassestic.main.neuralNetwork.activations.impl.Type1Activation;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,15 +32,15 @@ public class Main {
         Activation type1 = new Type1Activation();
 
         neuralNetwork.addLayer(2, sigmoid)
-                     .addLayer(5, type1)
-                     .addLayer(5, type1)
+                     .addLayer(6, type1)
+                     .addLayer(4, sigmoid)
                      .addLayer(3, sigmoid);
 
         Crossover crossover = new RandomCrossover();
         Mutation mutation = new RandomChoiceMutation(2, 1, 1, 3);
 
         Context context = new Context(neuralNetwork, 30,
-                0.01, mutation,
+                0.02, mutation,
                 crossover, datasetUtility,
                 600000);
 
@@ -44,16 +51,33 @@ public class Main {
     }
 
     private static void test(NeuralNetwork neuralNetwork, DatasetUtility datasetUtility) {
+
+        List<String> outputs = new ArrayList<>(datasetUtility.getDatasetSize());
+
         for (int i = 0; i < datasetUtility.getDatasetSize(); i++) {
             double[] expected = datasetUtility.getOutputAt(i);
             double[] predicted = neuralNetwork.predict(datasetUtility.getInputAt(i));
 
-            StringBuilder stringBuilder = new StringBuilder(40);
-            stringBuilder.append("Real: ")
-                         .append(Arrays.toString(expected))
-                         .append("\tPredicted: ")
-                         .append(Arrays.toString(predicted));
+            String predictions = Arrays.stream(predicted).mapToObj(d -> (int) d).map(Object::toString).collect(Collectors.joining("\t"));
+            String inputs = Arrays.stream(datasetUtility.getInputAt(i)).mapToObj(String::valueOf).collect(Collectors.joining("\t"));
+            outputs.add(inputs + "\t" + predictions);
+
+            String stringBuilder = "Real: " +
+                    Arrays.toString(expected) +
+                    "\tPredicted: " +
+                    Arrays.toString(predicted);
             System.out.println(stringBuilder);
+
+            try {
+                Path path = Paths.get("2643_output.csv");
+
+                String lines = String.join("\n", outputs);
+                Files.write(path, lines.getBytes());
+            } catch (IOException e) {
+                System.err.println(e);
+            }
         }
+
+
     }
 }
