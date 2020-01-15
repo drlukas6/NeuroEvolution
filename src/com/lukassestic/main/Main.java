@@ -5,12 +5,11 @@ import com.lukassestic.main.genetics.Context;
 import com.lukassestic.main.genetics.algorithm.GeneticAlgorithm;
 import com.lukassestic.main.genetics.algorithm.impl.EliminationAlgorithm;
 import com.lukassestic.main.genetics.crossover.Crossover;
-import com.lukassestic.main.genetics.crossover.Impl.AverageCrossover;
-import com.lukassestic.main.genetics.crossover.Impl.BlendCrossover;
-import com.lukassestic.main.genetics.crossover.Impl.HeuristicNetworkCrossover;
 import com.lukassestic.main.genetics.crossover.Impl.RandomCrossover;
 import com.lukassestic.main.genetics.mutation.Mutation;
 import com.lukassestic.main.genetics.mutation.impl.NoiseMutation;
+import com.lukassestic.main.genetics.mutation.impl.RandomChoiceMutation;
+import com.lukassestic.main.genetics.mutation.impl.RandomMutation;
 import com.lukassestic.main.neuralNetwork.NeuralNetwork;
 import com.lukassestic.main.neuralNetwork.activations.Activation;
 import com.lukassestic.main.neuralNetwork.activations.impl.SigmoidActivation;
@@ -31,12 +30,12 @@ public class Main {
                      .addLayer(3, sigmoid);
 
         Crossover crossover = new RandomCrossover();
-        Mutation mutation = new NoiseMutation(1);
+        Mutation mutation = new RandomChoiceMutation(2, 1, 1, 3);
 
         Context context = new Context(neuralNetwork, 30,
                 0.01, mutation,
                 crossover, datasetUtility,
-                100000);
+                600000);
 
         GeneticAlgorithm geneticAlgorithm = new EliminationAlgorithm(context);
 

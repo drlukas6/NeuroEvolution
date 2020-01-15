@@ -39,13 +39,15 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
 
         population.sort(NeuralNetwork::compareTo);
 
-        NeuralNetwork previousBest = population.get(context.getPopulationSize() - 1);
-
         for (int iteration = 0; iteration <= context.getMaxIterations(); iteration++) {
             double bestFitness = population.get(population.size() - 1).getFitness();
 
-            if (iteration % 100 == 0 || Double.isNaN(bestFitness)) {
+            if (iteration % 100 == 0) {
                 System.out.println("I: " + iteration + " Min error: " + 1.0 / bestFitness + " Fitness: " + bestFitness);
+            }
+
+            if (1.0 / bestFitness < 1E-7) {
+                break;
             }
 
             List<NeuralNetwork> selection = select();
@@ -56,8 +58,6 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
 
             newNetwork.evaluate();
 
-            previousBest = population.get(context.getPopulationSize() - 1).copy();
-            previousBest.evaluate();
             population.set(childIndex, newNetwork);
 
             population.sort(NeuralNetwork::compareTo);

@@ -51,7 +51,7 @@ public class NeuralNetwork implements Comparable<NeuralNetwork> {
         double sum = 0;
 
         for (int i = 0; i < datasetUtility.getIns().size(); i++) {
-            double[] prediction = predict(datasetUtility.getInputAt(i));
+            double[] prediction = predict(datasetUtility.getInputAt(i), false);
             double[] expected = datasetUtility.getOutputAt(i);
             for (int j = 0; j < prediction.length; j++) {
                 sum += Math.pow(expected[j] - prediction[j], 2);
@@ -61,14 +61,27 @@ public class NeuralNetwork implements Comparable<NeuralNetwork> {
         return sum / datasetUtility.getIns().size();
     }
 
-    public double[] predict(double[] inputs) {
+    private double[] predict(double[] inputs, boolean round) {
         layers.get(0).setOutputs(inputs);
         for (int i = 1; i < layers.size(); i++) {
             layers.get(i).forwardPassFrom(layers.get(i - 1));
         }
 
         Layer last = layers.get(layers.size() - 1);
-        return last.getOutputs();
+
+        double[] outputs = last.getOutputs();
+
+        if (round) {
+            for (int i = 0; i < outputs.length; i++) {
+                outputs[i] = outputs[i] < 0.5 ? 0 : 1;
+            }
+        }
+
+        return outputs;
+    }
+
+    public double[] predict(double[] inputs) {
+        return predict(inputs, true);
     }
 
     public double getFitness() {
