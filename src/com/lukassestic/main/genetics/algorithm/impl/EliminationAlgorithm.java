@@ -3,10 +3,17 @@ package com.lukassestic.main.genetics.algorithm.impl;
 import com.lukassestic.main.genetics.Context;
 import com.lukassestic.main.genetics.algorithm.GeneticAlgorithm;
 import com.lukassestic.main.neuralNetwork.NeuralNetwork;
+import com.sun.tools.javac.util.StringUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class EliminationAlgorithm extends GeneticAlgorithm {
 
@@ -39,8 +46,12 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
 
         population.sort(NeuralNetwork::compareTo);
 
+        List<Double> errors = new ArrayList<>(context.getMaxIterations() + 1);
+
         for (int iteration = 0; iteration <= context.getMaxIterations(); iteration++) {
             double bestFitness = population.get(population.size() - 1).getFitness();
+
+            errors.add(1.0 / bestFitness);
 
             if (iteration % 10000 == 0) {
                 System.out.println("I: " + iteration + " Min error: " + 1.0 / bestFitness + " Fitness: " + bestFitness);
@@ -64,6 +75,14 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
 
         }
 
+        try {
+            Path path = Paths.get("output.csv");
+
+            String lines = errors.stream().map(Object::toString).collect(Collectors.joining("\n"));
+            Files.write(path, lines.getBytes());
+        } catch (IOException e) {
+            System.err.println(e);
+        }
         return population.get(population.size() - 1);
     }
 }
