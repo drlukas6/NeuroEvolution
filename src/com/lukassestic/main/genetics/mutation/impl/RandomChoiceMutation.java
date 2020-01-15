@@ -10,14 +10,14 @@ import java.util.Random;
 public class RandomChoiceMutation implements Mutation {
     Mutation[] mutations;
     double[] propabilities;
-    Integer[] indexes = new Integer[]{0, 1};
+    Integer[] indexes = new Integer[]{0, 1, 2};
     double propSum;
 
-    public RandomChoiceMutation(double noiseProp, double noiseSigma, double randomProp, double randomSigma) {
-        propSum = noiseProp + randomProp;
-        propabilities = new double[]{noiseProp / propSum, randomProp / propSum};
+    public RandomChoiceMutation(double noiseProp, double noiseSigma, double randomProp, double randomSigma, double cosProp) {
+        propSum = noiseProp + randomProp + cosProp;
+        propabilities = new double[]{noiseProp / propSum, randomProp / propSum, cosProp / propSum};
 
-        mutations = new Mutation[]{new NoiseMutation(noiseSigma), new RandomMutation(randomSigma)};
+        mutations = new Mutation[]{new NoiseMutation(noiseSigma), new RandomMutation(randomSigma), new CosMutation()};
 
         Arrays.sort(propabilities);
         Arrays.sort(indexes, Comparator.comparingDouble(i -> propabilities[i]));
@@ -27,7 +27,7 @@ public class RandomChoiceMutation implements Mutation {
     public void mutate(NeuralNetwork neuralNetwork, double propability) {
         Random r = new Random();
 
-        Mutation mutation = mutations[indexes[r.nextInt(2)]];
+        Mutation mutation = mutations[indexes[r.nextInt(3)]];
 
         mutation.mutate(neuralNetwork, propability);
     }

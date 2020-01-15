@@ -32,12 +32,12 @@ public class Main {
         Activation type1 = new Type1Activation();
 
         neuralNetwork.addLayer(2, sigmoid)
-                     .addLayer(6, type1)
+                     .addLayer(8, type1)
                      .addLayer(4, sigmoid)
                      .addLayer(3, sigmoid);
 
         Crossover crossover = new RandomCrossover();
-        Mutation mutation = new RandomChoiceMutation(2, 1, 1, 3);
+        Mutation mutation = new RandomChoiceMutation(3, 1, 2, 3, 1);
 
         Context context = new Context(neuralNetwork, 30,
                 0.02, mutation,
@@ -69,7 +69,7 @@ public class Main {
             System.out.println(stringBuilder);
 
             try {
-                Path path = Paths.get("2643_output.csv");
+                Path path = Paths.get("2843_output.csv");
 
                 String lines = String.join("\n", outputs);
                 Files.write(path, lines.getBytes());

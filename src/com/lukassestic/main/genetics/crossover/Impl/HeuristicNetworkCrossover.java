@@ -3,7 +3,6 @@ package com.lukassestic.main.genetics.crossover.Impl;
 import com.lukassestic.main.genetics.crossover.Crossover;
 import com.lukassestic.main.neuralNetwork.NeuralNetwork;
 import com.lukassestic.main.neuralNetwork.layer.impl.Layer;
-import com.lukassestic.main.utilities.RandomUtility;
 
 import java.util.Random;
 
