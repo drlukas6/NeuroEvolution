@@ -11,8 +11,6 @@ public class DatasetUtility {
     private List<double[]> ins;
     private List<double[]> outs;
 
-    private List<Integer> indexes;
-
     public DatasetUtility(String filename) {
         this.filename = filename;
         read();
@@ -33,12 +31,6 @@ public class DatasetUtility {
         } catch (Exception e) {
             System.err.println(e);
         }
-
-        indexes = new ArrayList<>(ins.size());
-
-        for (int i = 0; i < outs.size(); i++) {
-            indexes.add(i);
-        }
     }
 
     public List<double[]> getIns() {
@@ -49,15 +41,11 @@ public class DatasetUtility {
         return outs;
     }
 
-    public void shuffle() {
-        Collections.shuffle(indexes);
-    }
-
     public double[] getInputAt(int i) {
-        return ins.get(indexes.get(i));
+        return ins.get(i);
     }
 
     public double[] getOutputAt(int i) {
-        return outs.get(indexes.get(i));
+        return outs.get(i);
     }
 }

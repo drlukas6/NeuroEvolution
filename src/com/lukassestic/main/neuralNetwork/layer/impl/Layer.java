@@ -3,9 +3,10 @@ package com.lukassestic.main.neuralNetwork.layer.impl;
 
 import com.lukassestic.main.neuralNetwork.activations.Activation;
 import com.lukassestic.main.neuralNetwork.activations.impl.SigmoidActivation;
-import com.lukassestic.main.utilities.RandomUtility;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
 
 public class Layer {
     private double[] outputs; // Y
@@ -54,10 +55,11 @@ public class Layer {
     }
 
     private void createRandomWeights() {
+        Random r = new Random();
         for (int i = 0; i < neurons; i++) {
             for(int j = 0; j < inputSize; j++) {
-                weights[i][j] = RandomUtility.doubleInRange(-1, 1);
-                scalingFactors[i][j] = RandomUtility.doubleInRange(-1, 1);
+                weights[i][j] = r.nextGaussian();
+                scalingFactors[i][j] = r.nextGaussian();
             }
         }
     }
@@ -98,5 +100,27 @@ public class Layer {
 
     public Activation getActivation() {
         return activation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Layer layer = (Layer) o;
+        return inputSize == layer.inputSize &&
+                neurons == layer.neurons &&
+                Arrays.equals(outputs, layer.outputs) &&
+                Arrays.equals(weights, layer.weights) &&
+                Arrays.equals(scalingFactors, layer.scalingFactors) &&
+                Objects.equals(activation, layer.activation);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(inputSize, neurons, activation);
+        result = 31 * result + Arrays.hashCode(outputs);
+        result = 31 * result + Arrays.hashCode(weights);
+        result = 31 * result + Arrays.hashCode(scalingFactors);
+        return result;
     }
 }

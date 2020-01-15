@@ -6,9 +6,10 @@ import com.lukassestic.main.neuralNetwork.layer.impl.Layer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class NeuralNetwork {
+public class NeuralNetwork implements Comparable<NeuralNetwork> {
     private DatasetUtility datasetUtility;
 
     private double fitness = 0;
@@ -39,7 +40,7 @@ public class NeuralNetwork {
 
     public NeuralNetwork copy() {
         List<Layer> layersCopy = layers.stream().map(Layer::copy).collect(Collectors.toList());
-        return new NeuralNetwork(datasetUtility, 0, layersCopy);
+        return new NeuralNetwork(datasetUtility, fitness, layersCopy);
     }
 
     public void evaluate() {
@@ -92,5 +93,25 @@ public class NeuralNetwork {
         copy.evaluate();
 
         return copy;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NeuralNetwork that = (NeuralNetwork) o;
+        return Double.compare(that.fitness, fitness) == 0 &&
+                layers.equals(that.layers);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fitness, layers);
+    }
+
+
+    @Override
+    public int compareTo(NeuralNetwork o) {
+        return Double.compare(fitness, o.fitness);
     }
 }

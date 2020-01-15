@@ -5,10 +5,14 @@ import com.lukassestic.main.neuralNetwork.NeuralNetwork;
 import com.lukassestic.main.neuralNetwork.layer.impl.Layer;
 import com.lukassestic.main.utilities.RandomUtility;
 
+import java.util.Random;
+
 public class NoiseMutation implements Mutation {
 
     @Override
     public void mutate(NeuralNetwork neuralNetwork, double propability) {
+
+        Random r = new Random();
 
         for (int layerIndex = 1; layerIndex < neuralNetwork.getNumberOfLayers(); layerIndex++) {
 
@@ -22,12 +26,12 @@ public class NoiseMutation implements Mutation {
 
                 for (int column = 0; column < weights[0].length; column++) {
 
-                    if (RandomUtility.doubleInRange(0, 1) <= propability) {
-                        weights[row][column] += RandomUtility.doubleInRange(-1, 1);
+                    if (r.nextDouble() <= propability) {
+                        weights[row][column] += r.nextGaussian();
                     }
 
-                    if (RandomUtility.doubleInRange(0, 1) <= propability) {
-                        scalingFactors[row][column] += RandomUtility.doubleInRange(-1, 1);
+                    if (r.nextDouble() <= propability) {
+                        scalingFactors[row][column] += r.nextGaussian();
                     }
                 }
             }
