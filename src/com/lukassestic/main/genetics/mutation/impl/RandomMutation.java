@@ -3,21 +3,19 @@ package com.lukassestic.main.genetics.mutation.impl;
 import com.lukassestic.main.genetics.mutation.Mutation;
 import com.lukassestic.main.neuralNetwork.NeuralNetwork;
 import com.lukassestic.main.neuralNetwork.layer.impl.Layer;
-import com.lukassestic.main.utilities.RandomUtility;
 
 import java.util.Random;
 
-public class NoiseMutation implements Mutation {
+public class RandomMutation implements Mutation {
 
     private double sigma;
 
-    public NoiseMutation(double sigma) {
+    public RandomMutation(double sigma) {
         this.sigma = sigma;
     }
 
     @Override
     public void mutate(NeuralNetwork neuralNetwork, double propability) {
-
         Random r = new Random();
 
         for (int layerIndex = 1; layerIndex < neuralNetwork.getNumberOfLayers(); layerIndex++) {
@@ -33,11 +31,11 @@ public class NoiseMutation implements Mutation {
                 for (int column = 0; column < weights[0].length; column++) {
 
                     if (r.nextDouble() <= propability) {
-                        weights[row][column] += r.nextGaussian() * sigma;
+                        weights[row][column] = r.nextGaussian() * sigma;
                     }
 
                     if (r.nextDouble() <= propability) {
-                        scalingFactors[row][column] += r.nextGaussian() * sigma;
+                        scalingFactors[row][column] = r.nextGaussian() * sigma;
                     }
                 }
             }
