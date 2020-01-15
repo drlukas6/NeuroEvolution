@@ -71,9 +71,16 @@ public class NeuralNetwork implements Comparable<NeuralNetwork> {
 
         double[] outputs = last.getOutputs();
 
+        int maxIndex = 0;
+        for (int i = 0; i < outputs.length; i++) {
+            if (outputs[i] > outputs[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
         if (round) {
             for (int i = 0; i < outputs.length; i++) {
-                outputs[i] = outputs[i] < 0.5 ? 0 : 1;
+                outputs[i] = i == maxIndex ? 1 : 0;
             }
         }
 
