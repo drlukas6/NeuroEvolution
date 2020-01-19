@@ -58,8 +58,8 @@ public class Layer {
         Random r = new Random();
         for (int i = 0; i < neurons; i++) {
             for(int j = 0; j < inputSize; j++) {
-                weights[i][j] = r.nextGaussian();
-                scalingFactors[i][j] = r.nextGaussian();
+                weights[i][j] = r.nextDouble();
+                scalingFactors[i][j] = r.nextDouble();
             }
         }
     }

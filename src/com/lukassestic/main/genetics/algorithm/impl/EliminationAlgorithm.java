@@ -44,6 +44,7 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
     @Override
     public NeuralNetwork fit() {
 
+
         population.sort(NeuralNetwork::compareTo);
 
         List<Double> errors = new ArrayList<>(context.getMaxIterations() + 1);
@@ -58,6 +59,7 @@ public class EliminationAlgorithm extends GeneticAlgorithm {
             }
 
             if (1.0 / bestFitness < 1E-7) {
+                System.out.println("\n=== GA converged after " + iteration + " iterations with error: " + 1.0 / bestFitness + " ===\n");
                 break;
             }
 

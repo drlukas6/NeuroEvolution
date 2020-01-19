@@ -32,12 +32,12 @@ public class Main {
         Activation type1 = new Type1Activation();
 
         neuralNetwork.addLayer(2, sigmoid)
-                     .addLayer(8, type1)
+                     .addLayer(6, type1)
                      .addLayer(4, sigmoid)
                      .addLayer(3, sigmoid);
 
         Crossover crossover = new RandomCrossover();
-        Mutation mutation = new RandomChoiceMutation(3, 1, 2, 3, 1);
+        Mutation mutation = new RandomChoiceMutation(3, 0.5, 2, 0.8, 1);
 
         Context context = new Context(neuralNetwork, 30,
                 0.02, mutation,
@@ -54,6 +54,8 @@ public class Main {
 
         List<String> outputs = new ArrayList<>(datasetUtility.getDatasetSize());
 
+        double[][] centroidWeights = neuralNetwork.getLayerAt(1).getWeights();
+
         for (int i = 0; i < datasetUtility.getDatasetSize(); i++) {
             double[] expected = datasetUtility.getOutputAt(i);
             double[] predicted = neuralNetwork.predict(datasetUtility.getInputAt(i));
@@ -68,16 +70,21 @@ public class Main {
                     Arrays.toString(predicted);
             System.out.println(stringBuilder);
 
-            try {
-                Path path = Paths.get("2843_output.csv");
 
-                String lines = String.join("\n", outputs);
-                Files.write(path, lines.getBytes());
-            } catch (IOException e) {
-                System.err.println(e);
-            }
         }
 
+        for(double[] row: centroidWeights) {
+            String descriptor = row[0] + "\t" + row[1] + "\t1\t1\t1";
+            outputs.add(descriptor);
+        }
 
+        try {
+            Path path = Paths.get("2643_output.csv");
+
+            String lines = String.join("\n", outputs);
+            Files.write(path, lines.getBytes());
+        } catch (IOException e) {
+            System.err.println(e);
+        }
     }
 }
